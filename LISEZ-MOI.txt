@@ -1,0 +1,28 @@
+Simulation de Réseau avec Pygame pour stratégies d'ordonnancement
+
+Ce programme est une simulation basique d'un réseau informatique utilisant Pygame. Il simule un serveur central connecté à plusieurs ordinateurs répartis dans différents sous-réseaux.
+
+Comment lancer le programme :
+1. Assurez-vous d'avoir Python installé sur votre système.
+2. Installez Pygame en exécutant la commande suivante :
+
+                                                            pip install pygame
+
+
+3. Exécutez le script principal main.py en utilisant la commande suivante :
+
+                                                            python main.py
+
+Utilisation du programme :
+- Une fois lancé, vous verrez une fenêtre de simulation affichant un serveur central et plusieurs ordinateurs répartis dans différents sous-réseaux.
+- Les ordinateurs peuvent être allumés ou éteints. Ils ont une capacité de batterie limitée et une température qui augmente lorsqu'ils sont allumés.
+- Vous pouvez survoler un ordinateur avec la souris pour afficher des informations telles que sa position, son niveau de batterie et sa température.
+
+Fichiers du programme :
+- computer.py : Contient la classe Computer qui représente un ordinateur.
+- server.py : Contient la classe Server qui représente le serveur central.
+- connection.py : Contient la classe Connection qui représente une connexion entre deux appareils.
+- scheduling.py : Contient les classes pour les stratégies d'ordonnancement.
+- main.py : Script principal pour lancer le programme.
+
+Il me reste à implementer différentes stratégies pour les comparer. Si vous avez des questions ou des commentaires, n'hésitez pas à me contacter.
