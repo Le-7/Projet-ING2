@@ -20,6 +20,22 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 GREY = (192, 192, 192)
 
+computer_specs = [
+    {"battery_capacity": 80, "temperature": 35, "strength": 1.5},
+    {"battery_capacity": 90, "temperature": 40, "strength": 2.0},
+    {"battery_capacity": 70, "temperature": 80, "strength": 8.0},
+    {"battery_capacity": 85, "temperature": 37, "strength": 1.8},
+    {"battery_capacity": 95, "temperature": 42, "strength": 2.2},
+    {"battery_capacity": 75, "temperature": 33, "strength": 6.3},
+    {"battery_capacity": 88, "temperature": 36, "strength": 1.7},
+    {"battery_capacity": 92, "temperature": 39, "strength": 4.5},
+    {"battery_capacity": 78, "temperature": 34, "strength": 2.8},
+    {"battery_capacity": 87, "temperature": 38, "strength": 3.5},
+    {"battery_capacity": 93, "temperature": 41, "strength": 5.0},
+    {"battery_capacity": 50, "temperature": 32, "strength": 10.0},
+]
+
+
 def select_scheduling_strategy():
     print("Choose a scheduling strategy:")
     print("1. Random Scheduling")
@@ -89,13 +105,16 @@ def main():
         # Création des ordinateurs du sous-réseau
         spacing = 70  # Espacement entre les ordinateurs du sous-réseau
         for j in range(num_subnet_computers[i]):
-            battery_capacity = 80+j*5  
-            temperature = 30 + j * 2  
-            strength = 1.5 +j*0.5 
+            # Ensure we don't exceed the number of specifications available
+            specs_index = j % len(computer_specs)
 
+            # Retrieve specifications for the current computer
+            specs = computer_specs[specs_index]
+
+            # Create the computer with the selected specifications
             x = subnet_positions[i][0] + (j - (num_subnet_computers[i] - 1) / 2) * spacing
             y = subnet_positions[i][1] + 100
-            computer = Computer(x, y, battery_capacity, temperature, strength)
+            computer = Computer(x, y, specs["battery_capacity"], specs["temperature"], specs["strength"])
             subnet_computers.append(computer)
             connections.append(Connection(main_computer, computer))
 
