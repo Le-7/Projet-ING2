@@ -14,12 +14,12 @@ class RandomScheduling(SchedulingStrategy):
             if computer.powered_on:
                 continue
 
-            random_percentage = min(random.random() * 10.0, Task)  
+            percentage = min(random.random() * 10.0, Task)  
        
             if computer.battery_level > 1 and computer.temperature < 90:
-                computer.thread = threading.Thread(target=computer.calculate, args=(random_percentage,))
+                computer.thread = threading.Thread(target=computer.calculate, args=(percentage,))
                 computer.thread.start()
-                Task -= random_percentage
+                Task -= percentage
                 print(Task)
         return Task    
      
@@ -32,12 +32,12 @@ class RoundRobinScheduling(SchedulingStrategy):
                 current_index = (current_index + 1) % num_computers
                 continue
 
-            random_percentage = min(random.random() * 10.0, Task)
+            percentage = min(computers[current_index].strength* 10.0, Task)
             
             if computers[current_index].battery_level > 1 and computers[current_index].temperature < 90:
-                computers[current_index].thread = threading.Thread(target=computers[current_index].calculate, args=(random_percentage,))
+                computers[current_index].thread = threading.Thread(target=computers[current_index].calculate, args=(percentage,))
                 computers[current_index].thread.start()
-                Task -= random_percentage
+                Task -= percentage
                 print(Task)
             
             current_index = (current_index + 1) % num_computers
@@ -54,12 +54,12 @@ class LowestBatteryScheduling(SchedulingStrategy):
             if computer.powered_on:
                 continue
 
-            random_percentage = min(random.random() * 10.0, Task)
+            percentage = min(computer.strength* 10.0, Task)
 
             if computer.battery_level > 1 and computer.temperature < 90:
-                computer.thread = threading.Thread(target=computer.calculate, args=(random_percentage,))
+                computer.thread = threading.Thread(target=computer.calculate, args=(percentage,))
                 computer.thread.start()
-                Task -= random_percentage
+                Task -= percentage
                 print(Task)
 
         return Task
@@ -74,12 +74,13 @@ class TemperatureControlScheduling(SchedulingStrategy):
             if computer.powered_on:
                 continue
 
-            random_percentage = min(random.random() * 10.0, Task)
+            percentage = min(computer.strength* 10.0, Task)
+
 
             if computer.battery_level > 1 and computer.temperature < 90:
-                computer.thread = threading.Thread(target=computer.calculate, args=(random_percentage,))
+                computer.thread = threading.Thread(target=computer.calculate, args=(percentage,))
                 computer.thread.start()
-                Task -= random_percentage
+                Task -= percentage
                 print(Task)
 
         return Task
@@ -94,12 +95,13 @@ class StrengthBasedScheduling(SchedulingStrategy):
             if computer.powered_on:
                 continue
 
-            random_percentage = min(random.random() * 10.0, Task)
+            percentage = min(computer.strength* 10.0, Task)
+
 
             if computer.battery_level > 1 and computer.temperature < 90:
-                computer.thread = threading.Thread(target=computer.calculate, args=(random_percentage,))
+                computer.thread = threading.Thread(target=computer.calculate, args=(percentage,))
                 computer.thread.start()
-                Task -= random_percentage
+                Task -= percentage
                 print(Task)
 
         return Task
@@ -114,12 +116,13 @@ class PriorityScheduling(SchedulingStrategy):
             if computer.powered_on:
                 continue
 
-            random_percentage = min(random.random() * 10.0, Task)
+            percentage = min(computer.strength* 10.0, Task)
+
 
             if computer.battery_level > 1 and computer.temperature < 90:
-                computer.thread = threading.Thread(target=computer.calculate, args=(random_percentage,))
+                computer.thread = threading.Thread(target=computer.calculate, args=(percentage,))
                 computer.thread.start()
-                Task -= random_percentage
+                Task -= percentage
                 print(Task)
 
         return Task

@@ -4,6 +4,7 @@ from server import Server
 from connection import Connection
 from scheduling import *
 import threading
+import time
 
 # Initialisation de Pygame
 pygame.init()
@@ -19,13 +20,37 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 GREY = (192, 192, 192)
 
-
+def select_scheduling_strategy():
+    print("Choose a scheduling strategy:")
+    print("1. Random Scheduling")
+    print("2. Round Robin Scheduling")
+    print("3. Priority Scheduling")
+    print("4. Lowest Battery Scheduling")
+    print("5. Temperature Control Scheduling")
+    print("6. Strength Based Scheduling")
+    choice = input("Enter your choice (1-6): ")
+    if choice == '1':
+        return RandomScheduling()
+    elif choice == '2':
+        return RoundRobinScheduling()
+    elif choice == '3':
+        return PriorityScheduling()
+    elif choice == '4':
+        return LowestBatteryScheduling()
+    elif choice == '5':
+        return TemperatureControlScheduling()
+    elif choice == '6':
+        return StrengthBasedScheduling()
+    else:
+        print("Invalid choice. Using default Random Scheduling.")
+        return RandomScheduling()
+    
 def display_hovered_computer_info(screen, hovered_computer):
     # Créez une surface de texte pour afficher les informations de l'ordinateur
         font = pygame.font.Font(None, 24)  # Choisissez une police et une taille de texte
 
     # Affichage des coordonnées de l'ordinateur
-        position_text_surface = font.render(f"Position: ({hovered_computer.x}, {hovered_computer.y})", True, WHITE, BLACK)
+        position_text_surface = font.render(f"Strength: {hovered_computer.strength:.2f})", True, WHITE, BLACK)
         position_text_rect = position_text_surface.get_rect()
         position_text_rect.center = (SCREEN_WIDTH // 2, SCREEN_HEIGHT - 30)  # Positionnez le texte en bas de l'écran
         screen.blit(position_text_surface, position_text_rect)
@@ -64,9 +89,13 @@ def main():
         # Création des ordinateurs du sous-réseau
         spacing = 70  # Espacement entre les ordinateurs du sous-réseau
         for j in range(num_subnet_computers[i]):
+            battery_capacity = 80+j*5  
+            temperature = 30 + j * 2  
+            strength = 1.5 +j*0.5 
+
             x = subnet_positions[i][0] + (j - (num_subnet_computers[i] - 1) / 2) * spacing
             y = subnet_positions[i][1] + 100
-            computer = Computer(x, y)
+            computer = Computer(x, y, battery_capacity, temperature, strength)
             subnet_computers.append(computer)
             connections.append(Connection(main_computer, computer))
 
@@ -79,7 +108,7 @@ def main():
     Task= 0    #100% de la tache initialement
     running = True
     choice = True
-
+    start_time = time.time() 
     while running:
         
         if Task > 0 :
@@ -110,10 +139,24 @@ def main():
         # Limiter le nombre d'images par seconde
         pygame.time.Clock().tick(60)
 
+        if all(computer.powered_on == False for computer in subnet_computers) and not choice:
+            end_time = time.time()  
+            total_execution_time = end_time - start_time
+            print(f"Temps d'éxécution: {total_execution_time} secondes")
+             # Calculer et afficher la température moyenne
+            avg_temperature = sum(computer.temperature for computer in subnet_computers) / len(subnet_computers)
+            print(f"Temperature Moyenne: {avg_temperature:.2f}")
+
+            # Calculer et afficher le niveau de batterie moyen
+            avg_battery_level = sum(computer.battery_level for computer in subnet_computers) / len(subnet_computers)
+            print(f"Batterie moyenne: {avg_battery_level:.2f}")
+            break
+        
         if choice :
             Task= float(input("Niveau de puissance du calcul en pourcentage : "))
             choice = False
 
+        
 
     # Quitter Pygame
     pygame.quit()
@@ -121,27 +164,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-def select_scheduling_strategy():
-    print("Choose a scheduling strategy:")
-    print("1. Random Scheduling")
-    print("2. Round Robin Scheduling")
-    print("3. Priority Scheduling")
-    print("4. Lowest Battery Scheduling")
-    print("5. Temperature Control Scheduling")
-    print("6. Strength Based Scheduling")
-    choice = input("Enter your choice (1-6): ")
-    if choice == '1':
-        return RandomScheduling()
-    elif choice == '2':
-        return RoundRobinScheduling()
-    elif choice == '3':
-        return PriorityScheduling()
-    elif choice == '4':
-        return LowestBatteryScheduling()
-    elif choice == '5':
-        return TemperatureControlScheduling()
-    elif choice == '6':
-        return StrengthBasedScheduling()
-    else:
-        print("Invalid choice. Using default Random Scheduling.")
-        return RandomScheduling()
